@@ -1,0 +1,223 @@
+/* Sticky header */
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Ensure main content does not overlap sticky header */
+.main-content {
+  margin-top: 70px; /* Adjust this value to match header height */
+}
+
+/* Sidebar styling */
+.sidebar-container.collapsed .nav-text {
+  display: none; /* Hide text when sidebar is collapsed */
+}
+
+/* Sidebar styles home.jsx*/
+
+.sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 0;
+    list-style: none;
+    height: 100vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar .nav-item {
+    width: 100%;
+  }
+  
+  .sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-left: 3px solid transparent;
+  }
+  
+  .sidebar .nav-link:hover {
+    background-color: #e0e0e0;
+    color: #333;
+    border-left: 3px solid #ff4b5a; /* Active indicator on the left */
+  }
+  
+  .sidebar .nav-link .nav-icon {
+    margin-right: 10px;
+    font-size: 27px;
+  }
+  
+  
+  /* Active link */
+  .sidebar .nav-link.active {
+    background-color: orange; /* Active background color */
+    color: #fff; /* Active text color */
+  }
+  
+  .sidebar .nav-link.active .nav-icon {
+    color: #fff;
+  }
+  
+  
+  /* Custom styles for sidebar */
+  .sidebar-container.collapsed .nav-text {
+    display: none; /* Hide the text when sidebar is collapsed */
+  }
+  
+  .sidebar-container.collapsed {
+    width: 70px; /* Adjust sidebar width when collapsed */
+  }
+  
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-link .nav-icon {
+    margin-right: 10px;
+  }
+  
+  .logo-container .logo-text {
+    margin-left: 10px;
+  }
+  
+  .sidebar-container.collapsed .logo-text {
+    display: none; /* Hide the logo text when sidebar is collapsed */
+  }
+  
+  
+  /* Add icons */
+  .nav-icon {
+    color: #333;
+    transition: color 0.3s ease;
+    font-size: 30px;
+  }
+  
+  /* Logo container styling */
+  .logo-container {
+    display: flex;
+    align-items: center;
+    /* Add some padding */
+    background-color:#ffffff; /* Optional: Background color for the logo section */
+    border-bottom: 1px solid #e0e0e0; /* Divider line */
+  }
+  
+/* Logo text styling */
+.logo-text {
+    font-weight: bold; /* Make the logo text bold */
+    font-size: 24px; /* Slightly larger font size for the logo text */
+    color: #333; /* Match text color with the sidebar */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+  
+  /* Navbar toggle button styles */
+  .navbar-toggle-btn {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-size: 24px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 0px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar-toggle-btn:hover {
+    color: #007bff; /* Change color on hover */
+    transform: scale(1.1); /* Slight grow effect */
+  }
+  
+  .navbar-toggle-btn:focus {
+    outline: none;
+  }
+  
+  .navbar-toggle-btn.active {
+    color: #007bff;
+  }
+  
+  
+  
+  /* Profile */
+  .profile-container {
+    position: relative;
+  }
+  
+  .profile-container img {
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .profile-container img:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect on hover */
+  }
+  
+  .profile-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%; /* Adjust so it appears directly below the image */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 150px;
+    padding: 5px 0; /* Adds padding inside the dropdown */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Show the menu on hover of the container */
+  .profile-container:hover .profile-menu {
+    display: block;
+    opacity: 1;
+  }
+  
+  /* Dropdown items styling */
+  .dropdown-item {
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    transition: background-color 0.2s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  
+  /* Card */
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    background-color: none;
+    border-radius: 20px; /* Apply the rounded corners directly to the card */
+    overflow: hidden; /* Ensures content respects the border radius */
+  }
+  
+  /* Custom hover effect for specific cards */
+  .hover-effect {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .hover-effect:hover {
+    transform: translateY(-10px); /* Makes the card move upwards on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+  }
+  /* Hover effect for the card */

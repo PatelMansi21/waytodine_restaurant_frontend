@@ -1,0 +1,78 @@
+
+/* Menu items */
+.item-add-card {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid orange; /* Bootstrap primary color */
+    border-radius: 30%; /* Make it circular */
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    background-color: white;
+  }
+  
+  .item-add-card:hover {
+    background-color: darkorange;
+    color: white;
+    transform: scale(1.1); /* Slightly enlarge on hover */
+  }
+  
+  .item-add-card h5 {
+    margin: 0;
+    font-size: 30px;
+    color: darkorange; /* Primary color for the + symbol */
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .item-add-card:hover h5 {
+    color: white;
+  }
+  
+  .menu-item-img{
+    height: 90px;
+    width: 90px;
+  }
+  
+  /* ItemModal  Styles */
+  .modal-body {
+    padding: 20px; /* Padding for modal body */
+  }
+  
+  /* Add margin to form groups */
+  .form-group {
+    margin-bottom: 15px; 
+    margin-bottom: 10px;/* Space between form elements */
+  }
+  
+  .form-label {
+    font-weight: 600; /* Bold labels for better visibility */
+  }
+  
+  .form-control {
+    border-radius: 0.25rem; /* Rounded input fields */
+  }
+  
+  /* Submit Button */
+  .item-submit-btn {
+    width: 100%; /* Full-width submit button */
+    border-radius: 0.25rem; /* Rounded corners */
+    background-color: #ffb74d; /* Light orange background */
+    color: #fff; /* White text color */
+    border: none; /* Remove default border */
+    font-weight: bold; /* Bold text */
+    transition: background-color 0.3s; 
+    margin-top: 10px; /* Add margin above the submit button */
+  }
+  
+  .item-submit-btn:hover {
+    background-color: #ffcc80; /* Darker orange on hover */
+  }
+  
+  /* Optional: Style for the file input */
+  .item-file-submit {
+    border: 1px solid #ced4da; /* Border for file input */
+    border-radius: 0.25rem; /* Rounded corners */
+  }
+  

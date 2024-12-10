@@ -1,0 +1,109 @@
+/* orderStyle.css */
+
+.navbar {
+    border-radius: 50px;
+    color: #000;
+    position: relative;
+    margin: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Slight opacity for the border */
+    padding: 2px;
+}
+
+.order-submenu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    
+    /* Adjust layout based on `menuOpen` class */
+}
+
+.menu.menu-open {
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 0;
+}
+
+.menu.menu-closed {
+    flex-direction: row;
+}
+
+.menu-item {
+    margin: 2px 2px;
+    border-radius: 50px;
+    padding: 10px 10px;
+    transition: background-color 0.3s;
+}
+
+.menu-item.selected {
+    background-color: rgba(255, 165, 0, 0.7);
+}
+
+.link {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+
+table,
+th,
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.badge {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+  
+  .badge-pending {
+    background-color: #d0e0fc;
+    color: #476ef0;
+  }
+  
+  .badge-ready {
+    background-color: #c9f7f5;
+    color: #1bc5bd;
+  }
+  /* OrderStyle.css */
+.card-body {
+    padding: 20px;
+  }
+  
+  .table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .pagination .page-item {
+    margin: 0 5px;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+  }
+  .order-items-list {
+    list-style-type: none; /* Removes the bullet points */
+    padding-left: 0; /* Removes any padding */
+  }
+  
+  .order-items-list li {
+    margin: 5px 0; /* Optional: Adds some spacing between list items */
+  }
+    

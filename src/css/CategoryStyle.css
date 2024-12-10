@@ -1,0 +1,60 @@
+.modal-body {
+    padding: 20px; /* Padding for modal body */
+  }
+  
+  /* Add margin to form groups */
+  .form-group {
+    margin-bottom: 15px; 
+    margin-bottom: 10px;/* Space between form elements */
+  }
+  
+  .form-label {
+    font-weight: 600; /* Bold labels for better visibility */
+  }
+  
+  .form-control {
+    border-radius: 0.25rem; /* Rounded input fields */
+  }
+  
+  /* Submit Button */
+  .category-submit-btn {
+    width: 100%; /* Full-width submit button */
+    border-radius: 0.25rem; /* Rounded corners */
+    background-color: #ffb74d; /* Light orange background */
+    color: #fff; /* White text color */
+    border: none; /* Remove default border */
+    font-weight: bold; /* Bold text */
+    transition: background-color 0.3s; 
+    margin-top: 10px; /* Add margin above the submit button */
+  }
+  
+  .category-submit-btn:hover {
+    background-color: #ffcc80; /* Darker orange on hover */
+  }
+  
+  /* Optional: Style for the file input */
+  .category-file-submit {
+    border: 1px solid #ced4da; /* Border for file input */
+    border-radius: 0.25rem; /* Rounded corners */
+  }
+  
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+ 
+
+.record-count {
+  text-align: right;
+}
+
+.table th, .table td {
+  text-align: center;
+}
+
+.pagination {
+  justify-content: center;
+}

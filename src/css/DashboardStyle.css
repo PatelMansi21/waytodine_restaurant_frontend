@@ -1,0 +1,50 @@
+
+
+/* Card body specific style for card1 */
+.card1 {
+    background-color: #3cb371; /* Green color for card1 */
+    color: white; /* Ensure text is visible on the green background */
+    padding: 20px; /* Adds padding inside the card */
+    border-radius: 20px; /* Rounded corners */
+  }
+  
+  .card2 {
+    background-color: #7ac0d4;
+    color: white; /* Ensure text is visible on the green background */
+    padding: 20px; /* Adds padding inside the card */
+    border-radius: 20px; /* Rounded corners */
+  }
+  .card3 {
+    background-color: #20a5d8;
+    color: white; /* Ensure text is visible on the green background */
+    padding: 20px; /* Adds padding inside the card */
+    border-radius: 20px; /* Rounded corners */
+  }
+  .card4 {
+    background-color: #cba3ff;
+    color: white; /* Ensure text is visible on the green background */
+    padding: 20px; /* Adds padding inside the card */
+    border-radius: 20px; /* Rounded corners */
+  }
+  .card5 {
+    background-color: #ffb464;
+    color: white; /* Ensure text is visible on the green background */
+    padding: 20px; /* Adds padding inside the card */
+    border-radius: 20px; /* Rounded corners */
+  }
+  
+  /* Conditions for status */
+  .badge {
+    font-size: 12px;
+    padding: 10px;
+    text-transform: capitalize;
+  }
+  
+  .bg-card{
+    background-Color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+  }
+  

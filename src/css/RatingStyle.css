@@ -1,0 +1,21 @@
+.star-container {
+    display: inline-flex;
+  }
+  
+  .star {
+    font-size: 24px; /* Adjust size as needed */
+    margin-right: 2px;
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: orange;
+  }
+  
+  .filled-star {
+    color: darkorange;
+    -webkit-text-stroke-width: 0; /* No border for filled stars */
+  }
+  
+  .empty-star {
+    color: transparent;
+  }
+  
