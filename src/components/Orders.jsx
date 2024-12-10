@@ -72,7 +72,6 @@ export default function Orders() {
           </nav>
         </div>
         {/* Conditionally render the selected component */}
-        {selectedSection === 'orderDetails' && <OrderDetails />}
         {selectedSection === 'NewOrder' && <NewOrder />}
         {selectedSection === 'orderstatus' && <OrderStatus/>}
         {selectedSection === 'AssignedOrders' && <AssignedOrders/>}
