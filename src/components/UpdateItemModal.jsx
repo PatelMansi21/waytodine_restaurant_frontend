@@ -6,6 +6,8 @@ import { BASE_URL } from "../AppConfig";
 const UpdateItemModal = ({ show, onHide, refreshMenu, currentItem }) => {
   const [formData, setFormData] = useState(currentItem || {});
   const [categories, setCategories] = useState([]);
+  const resid = sessionStorage.getItem("restaurantId");
+  
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -30,7 +32,7 @@ const UpdateItemModal = ({ show, onHide, refreshMenu, currentItem }) => {
         price: currentItem.price,
         status: currentItem.status,
         categoryId: currentItem.categoryId,
-        RestaurantId: 1,
+        RestaurantId: resid,
       });
     }
   }, [currentItem]);
@@ -66,7 +68,7 @@ const UpdateItemModal = ({ show, onHide, refreshMenu, currentItem }) => {
       price: parseFloat(formData.price),
       status: formData.status || 0,
       categoryId: formData.categoryId,
-      RestaurantId: 1,
+      RestaurantId: resid,
     };
 
     try {
@@ -153,6 +155,17 @@ const UpdateItemModal = ({ show, onHide, refreshMenu, currentItem }) => {
               accept="image/*"
               onChange={handleFileChange}
             />
+             {formData.itemImage && (
+    <img
+      src={
+        formData.itemImage.startsWith("http")
+          ? formData.itemImage
+          : `data:image/jpeg;base64,${formData.itemImage}`
+      }
+      alt="Item Preview"
+      style={{ marginTop: "10px", width: "150px", maxHeight: "200px" ,padding:"10px"}}
+    />
+  )}
           </Form.Group>
           <Button variant="primary" type="submit">
             Update Item

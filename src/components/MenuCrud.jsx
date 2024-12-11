@@ -14,12 +14,15 @@ export default function MenuCrud() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const resid = sessionStorage.getItem("restaurantId");
+
 
   // Function to refresh menu items
   const refreshMenu = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/menuitems`
+        `${BASE_URL}/menuitems/${resid}`
+       
       );
       console.log("data in menuitem===========", response.data.$values);
       response.data=response.data.$values;
@@ -73,6 +76,7 @@ export default function MenuCrud() {
 
   // Handle the edit button click
   const handleEditClick = (item) => {
+    console.log("selected item to update =",item);
     setCurrentItem(item); // Set the current item
     setShowUpdateModal(true); // Show the update modal
   };

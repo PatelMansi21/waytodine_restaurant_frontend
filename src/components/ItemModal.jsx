@@ -4,7 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../AppConfig";
 
 const ItemModal = ({ show, onHide, refreshMenu }) => {
-  const resid = 1;
+  const resid = sessionStorage.getItem("restaurantId");
   const [itemDetails, setItemDetails] = useState({
     categoryId: "",
     description: "",
@@ -13,7 +13,7 @@ const ItemModal = ({ show, onHide, refreshMenu }) => {
     status: 1,
     itemImage: "",
     isveg: 0,
-    RestaurantId: 1,
+    RestaurantId: resid,
   });
 
   const [categories, setCategories] = useState([]);
@@ -78,7 +78,7 @@ const ItemModal = ({ show, onHide, refreshMenu }) => {
       status: parseInt(itemDetails.status, 10),
       categoryId: parseInt(itemDetails.categoryId, 10),
       itemImage: itemDetails.itemImage, // File name only
-      RestaurantId: 1,
+      RestaurantId: resid,
     };
 
     console.log("Payload:", payload);
