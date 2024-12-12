@@ -1,18 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Outlet } from "react-router-dom";
 import user_profile_default from "../images/user_profile_default.png";
 import waytodine_logo from "../images/logo.jpg";
 import "../css/style.css";
 import "../css/HomeStyle.css";
-// import Dashboard from "../components/Dashboard";
-// import Orders from "../components/Orders";
-// import Profile from "../components/Profile";
-// import OrderStatus from "../components/OrderStatus";
-// import MenuCrud from "../components/MenuCrud";
-// import Category from "../components/Category";
-// import Rating from "../components/Rating";
-// import Card from "../components/Card";
-// import Register from "./Register";
+import { BASE_URL } from "../AppConfig";
+
 
 export default function Home() {
   const [isSidebarOpen, setSidebarOpen] = useState(false); // State to manage sidebar visibility
@@ -28,6 +21,8 @@ export default function Home() {
   const resid = sessionStorage.getItem("restaurantId");
   const resname = sessionStorage.getItem("resname");
   // console.log(resid," ",resname);
+
+  
 
   return (
     

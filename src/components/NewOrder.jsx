@@ -27,18 +27,20 @@ export default function NewOrder() {
   const fetchOrders = async () => {
     try {
       // Fetch orders
-      const response = await axios.get(`${BASE_URL}/GetOrdersByRestaurant/${resid}`);
+      const response = await axios.get(
+        `${BASE_URL}/GetOrdersByRestaurant/${resid}`
+      );
       const orders = response.data.$values; // Access the array of orders from the response
       console.log("my orders:", orders);
-  
+
       // Fetch item names for each order
       const ordersWithItemNames = await Promise.all(
         orders.map(async (restaurant) => {
-          const ordersWithItems = await Promise.all( 
+          const ordersWithItems = await Promise.all(
             restaurant.orders.$values.map(async (order) => {
               const itemsWithNames = await Promise.all(
                 order.items.$values.map(async (item) => {
-                  // Fetch item name by itemId 
+                  // Fetch item name by itemId
                   try {
                     const itemResponse = await axios.get(
                       `${BASE_URL}/MenuItem/${item.itemId}`
@@ -59,13 +61,13 @@ export default function NewOrder() {
           return { ...restaurant, orders: ordersWithItems };
         })
       );
-  
+
       setRestaurantOrders(ordersWithItemNames); // Set the orders with item names
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -116,6 +118,7 @@ export default function NewOrder() {
           <table className="table table-bordered table-hover">
             <thead className="table-warning">
               <tr>
+                {/* <th>ORDER ID</th> */}
                 <th>Customer Name</th>
                 <th>Date</th>
                 <th>Total Amount</th>
@@ -132,7 +135,7 @@ export default function NewOrder() {
                 currentOrders.map((order) => (
                   <React.Fragment key={order.orderId}>
                     <tr>
-                     
+                      {/* <td>{order.orderId}</td> */}
                       <td>{order.username ?? "N/A"}</td>
                       <td>
                         {new Date(order.createdAt).toISOString().split("T")[0]}
@@ -153,14 +156,14 @@ export default function NewOrder() {
                         <button
                           className="btn btn-success"
                           onClick={() => acceptOrder(order.orderId)}
-                          disabled={
-                            [2, 3, 4].includes(order.orderStatus) &&
-                            order.orderStatus === 2
-                          } // Disable if orderStatus is 2, 3, or 4 and isAccept is true
+                          disabled={order.orderStatus !== 1} // Enable only if orderStatus is 1
                         >
-                          {order.orderStatus ? "Prepared" : "PREPARED"}
+                          {order.orderStatus === 1
+                            ? "Mark as Prepared"
+                            : "Prepared"}
                         </button>
                       </td>
+                      {/* <td>{order.orderStatus}</td> */}
                     </tr>
                     {expandedOrders.includes(order.orderId) && (
                       <tr>

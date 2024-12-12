@@ -159,50 +159,63 @@ const fetchallDrivers = async () => {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <table className="table table-bordered table-hover">
-              <thead className="table-warning">
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer Name</th>
-                  <th>Driver Name</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-  {currentOrders.map((order, index) => (
-    <tr key={index}>
-      <td>{order.orderId}</td>
-      <td>{order.username}</td>
-      <td>
-        {order.deliveryPersonId ? (
-          alldrivers.find(
-            (driver) => driver.deliveryPersonId === order.deliveryPersonId
-          )?.driverName || "Driver Assigned"
-        ) : order.orderStatus === 3 ? (
-          <button
-            className="btn btn-primary"
-            onClick={() => handleAssignDriverClick(index)}
-          >
-            Assign Driver
-          </button>
-        ) : (
-          "N/A"
-        )}
-      </td>
-      <td>
-        {order.orderStatus === 3 ? (
-          <span className="badge bg-secondary">Out for Delivery</span>
-        ) : order.orderStatus === 4 ? (
-          <span className="badge bg-success">DELIVERED</span>
-        ) : (
-          <h6>hii</h6>
-        )}
-      </td>
+          <table className="table table-bordered table-hover">
+  <thead className="table-warning">
+    <tr>
+      <th>Order ID</th>
+      <th>Customer Name</th>
+      <th>Driver Name</th>
+      <th>Status</th>
     </tr>
-  ))}
-</tbody>
+  </thead>
+  <tbody>
+    {currentOrders.length > 0 ? (
+      currentOrders.map((order, index) => (
+        <tr key={index}>
+          <td>{order.orderId}</td>
+          <td>{order.username}</td>
+          <td>
+            {order.deliveryPersonId ? (
+              alldrivers.find(
+                (driver) => driver.deliveryPersonId === order.deliveryPersonId
+              )?.driverName || "Driver Assigned"
+            ) : order.orderStatus === 3 ? (
+              <button
+                className="btn btn-primary"
+                onClick={() => handleAssignDriverClick(index)}
+              >
+                Assign Driver
+              </button>
+            ) : (
+              "N/A"
+            )}
+          </td>
+          <td>
+  {order.deliveryPersonId &&
+  alldrivers.find(
+    (driver) => driver.deliveryPersonId === order.deliveryPersonId
+  )?.driverName ? (
+    <span className="badge bg-info">Driver Assigned</span> // Show "Driver Assigned" if driver name exists
+  ) : order.orderStatus === 3 ? (
+    <span className="badge bg-secondary">Awaiting Driver</span>
+  ) : order.orderStatus === 4 ? (
+    <span className="badge bg-success">DELIVERED</span>
+  ) : (
+    <span className="badge bg-danger">Pending</span>
+  )}
+</td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="4" className="text-center">
+          No orders are ready to assign drivers
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
 
-            </table>
             {/* Pagination */}
             <nav>
               <ul className="pagination">

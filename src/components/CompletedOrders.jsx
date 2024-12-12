@@ -11,7 +11,7 @@ export default function AssignedOrder() {
   const [showDriverModal, setShowDriverModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
     const resid = sessionStorage.getItem("restaurantId");
-
+const drivername="";
   // Fetch assigned orders on component mount
   useEffect(() => {
     const fetchOrders = async () => {
@@ -20,16 +20,24 @@ export default function AssignedOrder() {
           `${BASE_URL}/getordercompleted/${resid}`
         );
 
+        console.log("complete=",response.data.$values[0].deliveryPersonId);
+        const did=response.data.$values[0].deliveryPersonId;
+        const driver = await axios.get(
+          `${BASE_URL}/getdeliverypersonbyid/${did}`
+        );
+        console.log("driver=",driver.data.driverName);
+        // drivername= driver.data.driverName;
         const orderWithUser = await Promise.all(
           response.data.$values.map(async (item) => {
             try {
               const categoryResponse = await axios.get(
                 `${BASE_URL}/getuserbyid/${item.userId}`
               );
-              console.log("user==", categoryResponse.data.$values);
+              console.log("user==", categoryResponse);
+             
               return {
                 ...item,
-                username: categoryResponse.data.$values.firstName || "Unknown",
+                username: categoryResponse.data.firstName || "Unknown",
               };
             } catch (error) {
               console.error(
@@ -40,7 +48,7 @@ export default function AssignedOrder() {
             }
           })
         );
-        console.log(orderWithUser);
+        console.log("order with user",orderWithUser);
         setAssignedOrders(orderWithUser);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -139,7 +147,7 @@ export default function AssignedOrder() {
                 <strong>Order ID:</strong> {selectedOrder.orderId}
               </p>
               <p>
-                <strong>Driver Assigned:</strong> {selectedOrder.deliveryPersonId}
+                <strong>Driver Assigned: {drivername}</strong> {selectedOrder.deliveryPersonId}
               </p>
               <p>
                 <strong>Status:</strong>{" "}

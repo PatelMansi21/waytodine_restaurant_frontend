@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../AppConfig";
+import axios from "axios";
+
 
 export default function RestaurantProfile() {
   const [profileData, setProfileData] = useState({
@@ -9,6 +11,10 @@ export default function RestaurantProfile() {
     city: "",
     country: "",
     restaurantDocument: "",
+    name: "",
+  });
+  const [detailsdata, setDetailsdata] = useState({
+   
     bannerImage: "",
     currentOfferDiscountRate: "",
     description: "",
@@ -16,7 +22,6 @@ export default function RestaurantProfile() {
     openingHoursWeekdays: "",
     openingHoursWeekends: "",
     specialities: "",
-    name: "",
   });
 
   const [currentPage, setCurrentPage] = useState(1); // Manage the current page
@@ -29,47 +34,58 @@ export default function RestaurantProfile() {
   useEffect(() => {
     const fetchRestaurantData = async () => {
       try {
+        // Fetch restaurant profile data
         const response = await fetch(
           `${BASE_URL}/getrestaurantbyid/${currect_res}`
         );
         const details = await fetch(
           `${BASE_URL}/getrestaurantdetailsbyid/${currect_res}`
         );
-
-        if (response.ok) {
+  
+        if (response.ok && response.headers.get("Content-Length") !== "0") {
           const data = await response.json();
-          const detail_data = await details.json();
-          console.log("res data=", data);
-          console.log("res details =", detail_data);
-
+  
           setProfileData({
-            name: data.name,
+            name: data.name || "",
             email: data.email || "",
             phoneNumber: data.phoneNumber || "",
             location: data.location || "",
             city: data.city || "",
             country: data.country || "",
-            restaurantDocument: data.restaurantDocument,
-            bannerImage: detail_data.bannerimage,
-            currentOfferDiscountRate:
-              detail_data.currentOfferDiscountRate || "",
-            description: detail_data.description || "",
-            mission: detail_data.mission || "",
-            openingHoursWeekdays: detail_data.openingHoursWeekdays || "",
-            openingHoursWeekends: detail_data.openingHoursWeekends || "",
-            specialities: detail_data.specialities || "",
+            restaurantDocument: data.restaurantDocument || "",
           });
         } else {
-          console.error("Failed to fetch restaurant data");
+          console.warn("Profile response is empty or invalid");
+          alert("No profile data available.");
         }
+  
+        // if (details.ok && details.headers.get("Content-Length") !== "0") {
+        //   const detail_data = await details.json();
+        //   console.log("Fetched restaurant details:", detail_data);
+  
+        //   // Update form with fetched details
+        //   setDetailsdata({
+        //     bannerImage: detail_data.bannerImage || "",
+        //     currentOfferDiscountRate: detail_data.currentOfferDiscountRate || "",
+        //     description: detail_data.description || "",
+        //     mission: detail_data.mission || "",
+        //     openingHoursWeekdays: detail_data.openingHoursWeekdays || "",
+        //     openingHoursWeekends: detail_data.openingHoursWeekends || "",
+        //     specialities: detail_data.specialities || "",
+        //   });
+        // } else {
+        //   console.warn("Details response is empty or invalid");
+        //   console.log("No existing restaurant details found. Ready to add new details.");
+        // }
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
       }
     };
-
+  
     fetchRestaurantData();
-  }, []); // Empty dependency array means it runs only once after the initial render
-
+  }, []);
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
@@ -77,7 +93,13 @@ export default function RestaurantProfile() {
       [name]: value,
     }));
   };
-
+  const handledetailsChange = (e) => {
+    const { name, value } = e.target;
+    setDetailsdata((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   const handleFileChange = (e) => {
     const { files } = e.target;
     if (files && files[0]) {
@@ -104,7 +126,7 @@ export default function RestaurantProfile() {
       // Update bannerImage with base64 data
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileData((prev) => ({
+        setDetailsdata((prev) => ({
           ...prev,
           bannerImage: reader.result.split(",")[1], // Set base64 string
         }));
@@ -154,41 +176,44 @@ export default function RestaurantProfile() {
   };
 
   const handleUpdateRestaurantDetails = async () => {
+    // Check if it's an update or add based on the presence of detailsdata
+    const isUpdate = detailsdata.bannerImage || detailsdata.description || detailsdata.mission;
     const data = {
-      bannerImage: profileData.bannerImage,
-      currentOfferDiscountRate: profileData.currentOfferDiscountRate,
-      description: profileData.description,
-      mission: profileData.mission,
-      openingHoursWeekdays: profileData.openingHoursWeekdays,
-      openingHoursWeekends: profileData.openingHoursWeekends,
-      specialities: profileData.specialities,
-      RestaurantId: currect_res,
-      bannerImage:
-      profileData.bannerImage || bannerimage,
+      RestaurantId: parseInt(currect_res), // Ensure RestaurantId is an integer
+      BannerImage: detailsdata.bannerImage, // If base64 exists, use it
+      Description: detailsdata.description,
+      CurrentOfferDiscountRate: parseFloat(detailsdata.currentOfferDiscountRate), // Ensure it's a number
+      Mission: detailsdata.mission,
+      OpeningHoursWeekdays: detailsdata.openingHoursWeekdays,
+      OpeningHoursWeekends: detailsdata.openingHoursWeekends,
+      Specialities: detailsdata.specialities,
     };
-
+  
+    console.log(isUpdate ? "Updating Restaurant Details" : "Adding New Restaurant Details", data);
+  
     try {
-      const response = await fetch(
-        `${BASE_URL}/Updaterestaurantdetails/${currect_res}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (response.ok) {
-        alert("Restaurant details updated successfully!");
+      const response = 
+      // isUpdate
+      //   ? await axios.put(`${BASE_URL}/Updaterestaurantdetails/${currect_res}`, data, {
+      //       headers: { "Content-Type": "application/json" },
+      //     })
+      //   : 
+      await axios.post(`${BASE_URL}/add-restaurantdetails`, data, {
+            headers: { "Content-Type": "application/json" },
+          });
+  
+      if (response.status === 200) {
+        alert(`Restaurant details ${isUpdate ? "updated" : "added"} successfully!`);
       } else {
-        alert("Failed to update restaurant details.");
+        alert(`Failed to ${isUpdate ? "update" : "add"} details. Status: ${response.status}`);
       }
     } catch (error) {
-      console.error("Error updating restaurant details:", error);
+      console.error(`Error ${isUpdate ? "updating" : "adding"} restaurant details:`, error);
     }
   };
-
+  
+  
+  
   return (
     <div className="container">
       <div className="card mt-5 position-relative">
@@ -248,10 +273,10 @@ export default function RestaurantProfile() {
                   onChange={handleFileChange}
                   className="form-control mb-2"
                 />
-                <h6>OLD : {profileData.restaurantDocument}</h6>
+                {/* <h6>OLD : {profileData.restaurantDocument}</h6>
                 NEW : {restaurantDocumentName && (
     <span className="text-muted">{restaurantDocumentName}</span>
-  )}
+  )} */}
               </div>
 
               <button
@@ -282,48 +307,48 @@ export default function RestaurantProfile() {
                 type="number"
                 name="currentOfferDiscountRate"
                 placeholder="Discount Rate"
-                value={profileData.currentOfferDiscountRate}
-                onChange={handleChange}
+                value={detailsdata.currentOfferDiscountRate}
+                onChange={handledetailsChange}
                 className="form-control mb-2"
               />
               <input
                 type="text"
                 name="description"
                 placeholder="Description"
-                value={profileData.description}
-                onChange={handleChange}
+                value={detailsdata.description}
+                onChange={handledetailsChange}
                 className="form-control mb-2"
               />
               <input
                 type="text"
                 name="mission"
                 placeholder="Mission"
-                value={profileData.mission}
-                onChange={handleChange}
+                value={detailsdata.mission}
+                onChange={handledetailsChange}
                 className="form-control mb-2"
               />
               <input
                 type="text"
                 name="openingHoursWeekdays"
                 placeholder="Weekday Hours"
-                value={profileData.openingHoursWeekdays}
-                onChange={handleChange}
+                value={detailsdata.openingHoursWeekdays}
+                onChange={handledetailsChange}
                 className="form-control mb-2"
               />
               <input
                 type="text"
                 name="openingHoursWeekends"
                 placeholder="Weekend Hours"
-                value={profileData.openingHoursWeekends}
-                onChange={handleChange}
+                value={detailsdata.openingHoursWeekends}
+                onChange={handledetailsChange}
                 className="form-control mb-2"
               />
               <input
                 type="text"
                 name="specialities"
                 placeholder="Specialities"
-                value={profileData.specialities}
-                onChange={handleChange}
+                value={detailsdata.specialities}
+                onChange={handledetailsChange}
                 className="form-control mb-2"
               />
               <button

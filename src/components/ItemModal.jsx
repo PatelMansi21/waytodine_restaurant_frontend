@@ -186,10 +186,21 @@ const ItemModal = ({ show, onHide, refreshMenu }) => {
               type="file"
               onChange={handleFileChange}
               accept="image/*"
+              
             />
             {itemDetails.itemImage && (
+    <div className="mt-3">
+      <p>Image Preview:</p>
+      <img
+        src={`data:image/*;base64,${itemDetails.itemImage}`}
+        alt="Item Preview"
+        style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "contain" }}
+      />
+    </div>
+  )}
+            {/* {itemDetails.itemImage && (
               <div className="mt-2">Selected File: {itemDetails.itemImage}</div>
-            )}
+            )} */} 
           </Form.Group>
           <Button variant="primary" type="submit">
             Save

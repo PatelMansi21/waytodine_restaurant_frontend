@@ -148,6 +148,7 @@ export default function MenuCrud() {
                     <th scope="col">#</th>
                     <th scope="col">Item Name</th>
                     <th scope="col">Category</th>
+                    <th scope="col">Description</th>
                     <th scope="col">Image</th>
                     <th scope="col">Price</th>
                     <th scope="col">Actions</th>
@@ -164,6 +165,7 @@ export default function MenuCrud() {
                         <td>{c.itemId}</td>
                         <td>{c.name}</td>
                         <td>{c.categoryName}</td>
+                        <td>{c.description}</td>
                         <td>
                           <img
                             src={c.itemImage}

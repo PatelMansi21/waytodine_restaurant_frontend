@@ -11,44 +11,46 @@ export default function OrderStatus() {
   const resid = sessionStorage.getItem("restaurantId");
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/allordersbyresid/${resid}`
-        );
-       
-        console.log("Response=",response.data.$values);
-        const orders=response.data.$values;
-
-        // console.log("order=",orders);
-        const orderWithUser = await Promise.all(
-          orders.map(async (item) => {
-            try {
-              const userResponse = await axios.get(
-                `${BASE_URL}/getuserbyid/${item.userId}`
-              );
-                console.log("userResponse=",userResponse.data);
-              return {
-                ...item,
-                username: userResponse.data.firstName || "Unknown",
-                location: userResponse.data.location,
-              };
-            } catch (error) {
-              console.error(
-                `Error fetching category for item ID ${item.customerId}`,
-                error
-              );
-              return { ...item, username: "Unknown", location: "" };
-            }
-          })
-        );
-        setOrders(orderWithUser);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
+    
     fetchOrders();
   }, []);
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/GetAllOrderstatusnew/${resid}`
+        // https://localhost:7173/api/Res/GetAllOrderstatusnew/3
+      );
+  
+      console.log("Response=", response.data.$values);
+      const orders = response.data.$values;
+  
+      const orderWithUser = await Promise.all(
+        orders.map(async (item) => {
+          try {
+            const userResponse = await axios.get(
+              `${BASE_URL}/getuserbyid/${item.userId}`
+            );
+            console.log("userResponse=", userResponse.data);
+            return {
+              ...item,
+              username: userResponse.data.firstName || "Unknown",
+              location: userResponse.data.location,
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching category for item ID ${item.customerId}`,
+              error
+            );
+            return { ...item, username: "Unknown", location: "" };
+          }
+        })
+      );
+      setOrders(orderWithUser);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+  
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -61,10 +63,12 @@ export default function OrderStatus() {
         `${BASE_URL}/updatereadyorderstatus/${orderId}`
         
       );
+      console.log("orderid = ",orderId);
 
       if (response.status === 200) {
        
         console.log("Order status updated successfully.");
+        fetchOrders();
       } else {
         console.error("Failed to update order status:", response.data);
       }

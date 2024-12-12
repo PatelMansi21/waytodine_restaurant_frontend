@@ -1,12 +1,76 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import buffet from "../images/buffet.jpg";
 import burger from "../images/burger (1).jpg";
 import noodles from "../images/noodles.png";
 import "../css/DashboardStyle.css";
+import { BASE_URL } from "../AppConfig";
 
 export default function Dashboard() {
+  const resid = sessionStorage.getItem("restaurantId");
+  const resname = sessionStorage.getItem("resname");
+  // console.log(resid," ",resname);
+  const [menuItemsCount, setMenuItemsCount] = useState(0); // Store the count of menu items
+  const [orderCount, setorderCount] = useState(0);
+  const [feedbackCount, setfeedbackCount] = useState(0);
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/menuitems/${resid}`);
+        if (response.ok) {
+          const data = await response.json();
+          // console.log(data);
+          setMenuItemsCount(data.$values.length); // Set the count of menu items
+        } else {
+          console.error("No menu items found");
+          setMenuItemsCount(0); // Set count to 0 if no items are found
+        }
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+        setMenuItemsCount(0); // Set count to 0 if there is an error
+      }
+    };
+
+    fetchMenuItems();
+    const fetchorders = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/GetAllOrderstatusnew/${resid}`);
+        if (response.ok) {
+          const data = await response.json();
+          // console.log(data);
+          setorderCount(data.$values.length); // Set the count of menu items
+        } else {
+          console.error("No order items found");
+          setorderCount(0); // Set count to 0 if no items are found
+        }
+      } catch (error) {
+        console.error("Error fetching order items:", error);
+        setorderCount(0); // Set count to 0 if there is an error
+      }
+    };
+
+    fetchorders();
+    const feedbackCounts = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/getallfeedbacks/${resid}`);
+        if (response.ok) {
+          const data = await response.json();
+          // console.log(data);
+          setfeedbackCount(data.$values.length); // Set the count of menu items
+        } else {
+          console.error("No order items found");
+          setfeedbackCount(0); // Set count to 0 if no items are found
+        }
+      } catch (error) {
+        console.error("Error fetching order items:", error);
+        setfeedbackCount(0); // Set count to 0 if there is an error
+      }
+    };
+
+    feedbackCounts();
+  }); 
+  
   const progressData = [
     { label: "Week 1 - 25%", width: "25%", color: "bg-primary" },
     { label: "Week 2 - 50%", width: "50%", color: "bg-info" },
@@ -50,8 +114,8 @@ export default function Dashboard() {
         <div className="col-md-3">
           <div className="card hover-effect">
             <div className="card-body card2">
-              <h5>Sells Graph</h5>
-              <h2>Rs.8,451</h2>
+              <h5>Menu Items Count</h5>
+              <h2> {menuItemsCount}</h2>
               <small className="text-success">+3.2%</small>
             </div>
           </div>
@@ -59,8 +123,8 @@ export default function Dashboard() {
         <div className="col-md-3">
           <div className="card hover-effect">
             <div className="card-body card1">
-              <h5>Total Visitors</h5>
-              <h2>3,973</h2>
+              <h5>Total Orders</h5>
+              <h2>{orderCount}</h2>
               <small className="text-danger">-4.5%</small>
             </div>
           </div>
@@ -68,8 +132,8 @@ export default function Dashboard() {
         <div className="col-md-3">
           <div className="card hover-effect">
             <div className="card-body card5">
-              <h5>New Users</h5>
-              <h2>7,333</h2>
+              <h5>Ratings</h5>
+              <h2>{feedbackCount}</h2>
               <small className="text-success">+12.5%</small>
             </div>
           </div>
@@ -77,8 +141,8 @@ export default function Dashboard() {
         <div className="col-md-3">
           <div className="card hover-effect">
             <div className="card-body card4">
-              <h5>Total Orders</h5>
-              <h2>48,973</h2>
+              <h5>Total Sales</h5>
+              <h2>3500</h2>
               <small className="text-success">+9.5%</small>
             </div>
           </div>
