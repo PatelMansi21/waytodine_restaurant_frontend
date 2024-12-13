@@ -4,6 +4,8 @@ import axios from "axios";
 
 
 export default function RestaurantProfile() {
+  const [flag, setFlag] = useState(0);
+
   const [profileData, setProfileData] = useState({
     email: "",
     phoneNumber: "",
@@ -38,10 +40,7 @@ export default function RestaurantProfile() {
         const response = await fetch(
           `${BASE_URL}/getrestaurantbyid/${currect_res}`
         );
-        const details = await fetch(
-          `${BASE_URL}/getrestaurantdetailsbyid/${currect_res}`
-        );
-  
+       
         if (response.ok && response.headers.get("Content-Length") !== "0") {
           const data = await response.json();
   
@@ -59,29 +58,66 @@ export default function RestaurantProfile() {
           alert("No profile data available.");
         }
   
-        // if (details.ok && details.headers.get("Content-Length") !== "0") {
-        //   const detail_data = await details.json();
-        //   console.log("Fetched restaurant details:", detail_data);
-  
-        //   // Update form with fetched details
-        //   setDetailsdata({
-        //     bannerImage: detail_data.bannerImage || "",
-        //     currentOfferDiscountRate: detail_data.currentOfferDiscountRate || "",
-        //     description: detail_data.description || "",
-        //     mission: detail_data.mission || "",
-        //     openingHoursWeekdays: detail_data.openingHoursWeekdays || "",
-        //     openingHoursWeekends: detail_data.openingHoursWeekends || "",
-        //     specialities: detail_data.specialities || "",
-        //   });
-        // } else {
-        //   console.warn("Details response is empty or invalid");
-        //   console.log("No existing restaurant details found. Ready to add new details.");
-        // }
+       
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
       }
     };
-  
+  const fetchResturantDetails=async()=>{
+    const details = await fetch(
+      `${BASE_URL}/getrestaurantdetailsbyid/${currect_res}`
+    );
+    console.log(details.status);
+    if(details.status==204)
+    {
+      setDetailsdata({
+            bannerImage:"",
+            currentOfferDiscountRate: "",
+            description: "",
+            mission: "",
+            openingHoursWeekdays:"",
+            openingHoursWeekends: "",
+            specialities: "",
+          });
+          
+    }
+    else{
+      const detail_data = await details.json();
+        console.log("Fetched restaurant details:", detail_data);
+        // Update form with fetched details
+        setDetailsdata({
+          bannerImage: detail_data.bannerImage || "",
+          currentOfferDiscountRate: detail_data.currentOfferDiscountRate || "",
+          description: detail_data.description || "",
+          mission: detail_data.mission || "",
+          openingHoursWeekdays: detail_data.openingHoursWeekdays || "",
+          openingHoursWeekends: detail_data.openingHoursWeekends || "",
+          specialities: detail_data.specialities || "",
+        });
+        setFlag(1); 
+
+        console.log("flag when data already in table = ",flag);
+    }
+    // if (details.ok && details.headers.get("Content-Length") !== "0") {
+    //   const detail_data = await details.json();
+    //   console.log("Fetched restaurant details:", detail_data);
+
+    //   // Update form with fetched details
+    //   setDetailsdata({
+    //     bannerImage: detail_data.bannerImage || "",
+    //     currentOfferDiscountRate: detail_data.currentOfferDiscountRate || "",
+    //     description: detail_data.description || "",
+    //     mission: detail_data.mission || "",
+    //     openingHoursWeekdays: detail_data.openingHoursWeekdays || "",
+    //     openingHoursWeekends: detail_data.openingHoursWeekends || "",
+    //     specialities: detail_data.specialities || "",
+    //   });
+    // } else {
+    //   console.warn("Details response is empty or invalid");
+    //   console.log("No existing restaurant details found. Ready to add new details.");
+    // }
+  }
+  fetchResturantDetails();
     fetchRestaurantData();
   }, []);
   
@@ -177,7 +213,7 @@ export default function RestaurantProfile() {
 
   const handleUpdateRestaurantDetails = async () => {
     // Check if it's an update or add based on the presence of detailsdata
-    const isUpdate = detailsdata.bannerImage || detailsdata.description || detailsdata.mission;
+    // const isUpdate = detailsdata.bannerImage || detailsdata.description || detailsdata.mission;
     const data = {
       RestaurantId: parseInt(currect_res), // Ensure RestaurantId is an integer
       BannerImage: detailsdata.bannerImage, // If base64 exists, use it
@@ -188,27 +224,27 @@ export default function RestaurantProfile() {
       OpeningHoursWeekends: detailsdata.openingHoursWeekends,
       Specialities: detailsdata.specialities,
     };
-  
-    console.log(isUpdate ? "Updating Restaurant Details" : "Adding New Restaurant Details", data);
-  
+  console.log("flag=",flag);
+    // console.log(isUpdate ? "Updating Restaurant Details" : "Adding New Restaurant Details", data);
+  // flag=1--> update flag=0 -->new add
     try {
       const response = 
-      // isUpdate
-      //   ? await axios.put(`${BASE_URL}/Updaterestaurantdetails/${currect_res}`, data, {
-      //       headers: { "Content-Type": "application/json" },
-      //     })
-      //   : 
+      flag
+        ? await axios.put(`${BASE_URL}/Updaterestaurantdetails/${currect_res}`, data, {
+            headers: { "Content-Type": "application/json" },
+          })
+        : 
       await axios.post(`${BASE_URL}/add-restaurantdetails`, data, {
             headers: { "Content-Type": "application/json" },
           });
   
       if (response.status === 200) {
-        alert(`Restaurant details ${isUpdate ? "updated" : "added"} successfully!`);
+        alert(`Restaurant details ${flag ? "updated" : "added"} successfully!`);
       } else {
-        alert(`Failed to ${isUpdate ? "update" : "add"} details. Status: ${response.status}`);
+        alert(`Failed to ${flag ? "update" : "add"} details. Status: ${response.status}`);
       }
     } catch (error) {
-      console.error(`Error ${isUpdate ? "updating" : "adding"} restaurant details:`, error);
+      console.error(`Error ${flag ? "updating" : "adding"} restaurant details:`, error);
     }
   };
   
@@ -352,11 +388,13 @@ export default function RestaurantProfile() {
                 className="form-control mb-2"
               />
               <button
-                className="btn btn-success"
-                onClick={handleUpdateRestaurantDetails}
-              >
-                Update Restaurant Details
-              </button>
+  className="btn btn-success"
+  onClick={handleUpdateRestaurantDetails}
+>
+  {flag == 0 ? "Add Restaurant Details" : "Update Restaurant Details"}
+</button>
+
+
             </div>
           )}
 

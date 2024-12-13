@@ -114,7 +114,12 @@ export default function OrderStatus() {
                 </tr>
               </thead>
               <tbody>
-                {currentOrders.map((order, index) => (
+              {currentOrders.length === 0 ? (
+                <tr>
+                  <td colSpan="6">No Orders found</td>
+                </tr>
+              ) :
+                currentOrders.map((order, index) => (
                   <tr key={index}>
                     <td>{order.orderId}</td>
                     <td>
@@ -159,7 +164,8 @@ export default function OrderStatus() {
                       )}
                     </td>
                   </tr>
-                ))}
+                ))
+              }
               </tbody>
             </table>
             <nav>

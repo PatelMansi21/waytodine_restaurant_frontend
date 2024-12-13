@@ -6,6 +6,7 @@ import burger from "../images/burger (1).jpg";
 import noodles from "../images/noodles.png";
 import "../css/DashboardStyle.css";
 import { BASE_URL } from "../AppConfig";
+import axios from "axios";
 
 export default function Dashboard() {
   const resid = sessionStorage.getItem("restaurantId");
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [menuItemsCount, setMenuItemsCount] = useState(0); // Store the count of menu items
   const [orderCount, setorderCount] = useState(0);
   const [feedbackCount, setfeedbackCount] = useState(0);
+  const [chart,setchartCount]=useState(0);
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
@@ -69,6 +71,24 @@ export default function Dashboard() {
     };
 
     feedbackCounts();
+
+    const fetchallorderamount=async()=>{
+      try {
+        
+        const response = await axios.get(
+          `${BASE_URL}/GetAllOrderstatusnew/${resid}`);
+    
+        console.log("Response=", response.data.$values);
+        const totalSales = response.data.$values.reduce((total, record) => total + record.totalAmount, 0);
+          setchartCount(totalSales);
+        console.log("Total Sales:", totalSales); 
+      } catch (error) {
+        console.error("Error fetching order items:", error);
+        setchartCount(0); 
+      }
+    }
+    fetchallorderamount();
+
   }); 
   
   const progressData = [
@@ -82,19 +102,19 @@ export default function Dashboard() {
   const favouriteItems = [
     {
       name: "Fish Burger",
-      price: "$12.40",
+      price: "Rs 12.40",
       description: "2 Part Chicken",
       imageUrl: buffet,
     },
     {
       name: "Beef Burger",
-      price: "$24.64",
+      price: "Rs 24.64",
       description: "Small Size",
       imageUrl: burger,
     },
     {
       name: "Cheese Burger",
-      price: "$14.78",
+      price: "Rs 14.78",
       description: "3 Part Cream",
       imageUrl: noodles,
     },
@@ -171,7 +191,7 @@ export default function Dashboard() {
                   })}
                 />
               </div>
-              <p style={styles.amount}>Rs 786.58 From Rs 1,000</p>
+              <p style={styles.amount}>Total sales = Rs.{chart}</p>
             </div>
           </div>
 
